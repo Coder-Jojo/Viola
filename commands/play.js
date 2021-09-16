@@ -3,13 +3,13 @@ const ytdl = require("ytdl-core");
 
 const execute = async (msg, args, servers) => {
   if (!args[0]) {
-    const server = servers[msg.guild.id];
-    if (server) {
-      server.dispatcher.resume();
-      server.dispatcher.resume();
-      console.log("msasttt");
-    } else
-      msg.channel.send("you need to provide a song!\nexample: -play arcade");
+    // const server = servers[msg.guild.id];
+    // if (server) {
+    //   server.dispatcher.resume();
+    //   server.dispatcher.resume();
+    //   console.log("msasttt");
+    // } else
+    msg.channel.send("you need to provide a song!\nexample: -play arcade");
     return;
   }
   if (!msg.member.voice.channel) {

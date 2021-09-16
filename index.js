@@ -36,9 +36,8 @@ client.on("message", (message) => {
     client.commands.get("stop").execute(message, servers);
   } else if (command === "loop") {
     client.commands.get("loop").execute(message, servers);
-  } else if (command === "pause") {
-    client.commands.get("pause").execute(message, servers);
   }
+
   console.log(args, command);
 });
 

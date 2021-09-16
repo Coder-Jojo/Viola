@@ -1,53 +1,37 @@
-const { Client, Intents } = require("discord.js");
-const ytdl = require("ytdl-core");
+const Discord = require("discord.js");
+const client = new Discord.Client();
+const fs = require("fs");
+
 require("dotenv").config();
 
-// Create a new client instance
-const client = new Client({
-  intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES],
-});
+client.commands = new Discord.Collection();
+const commandFiles = fs
+  .readdirSync("./commands/")
+  .filter((file) => file.endsWith(".js"));
+
+for (const file of commandFiles) {
+  const command = require(`./commands/${file}`);
+  client.commands.set(command.name, command);
+}
+
+const pref = "-";
+const servers = [];
 
 client.once("ready", () => {
-  console.log("Ready!");
-});
-client.once("reconnecting", () => {
-  console.log("Reconnecting!");
-});
-client.once("disconnect", () => {
-  console.log("Disconnect!");
+  console.log("ready");
 });
 
-client.on("message", async (msg) => {
-  if (msg.author.bot) return;
-  if (msg.content === "join voice") {
-    try {
-      const connec = await msg.member.voice.channel.join();
-    } catch (error) {
-      console.log(error);
-    }
-  } else if (msg.content.startsWith("play")) {
-    const connection = await msg.member.voice.channel.join();
-    const arg = msg.content.split(" ");
-    console.log(arg[1]);
-    const songInfo = await ytdl.getInfo(arg[1]);
-    const song = {
-      title: songInfo.videoDetails.title,
-      url: songInfo.videoDetails.video_url,
-    };
-    const hehe = () => {
-      connection
-        .play(ytdl(song.url))
-        .on("finish", () => {
-          msg.member.voice.channel.join();
-          hehe();
-        })
-        .on("error", (error) => {
-          console.error(error);
-          hehe();
-        });
-    };
-    hehe();
+client.on("message", (message) => {
+  if (!message.content.startsWith("-") || message.author.bot) return;
+
+  const args = message.content.slice(pref.length).split(/ +/);
+  const command = args.shift().toLowerCase();
+  if (command === "play") {
+    client.commands.get("play").execute(message, args, servers);
+  } else if (command === "queue") {
+    client.commands.get("queue").execute(message, servers);
   }
+  console.log(args, command);
 });
 
 client.login(process.env.TOKEN);

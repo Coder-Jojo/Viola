@@ -3,6 +3,7 @@ const execute = (msg, servers) => {
   if (msg?.guild?.connection) {
     msg.guild.voice.connection.disconnect();
   }
+  msg.channel.send("byeeee!!!!");
 };
 
 module.exports = { name: "leave", execute };

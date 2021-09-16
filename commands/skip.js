@@ -3,6 +3,7 @@ const execute = (msg, servers) => {
   if (server.dispatcher) {
     server.dispatcher.end();
   }
+  msg.channel.send("skipped");
 };
 
 module.exports = { name: "skip", execute };

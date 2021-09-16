@@ -38,6 +38,8 @@ client.on("message", (message) => {
     client.commands.get("loop").execute(message, servers);
   } else if (command === "leave") {
     client.commands.get("leave").execute(message, servers);
+  } else if (command === "back") {
+    client.commands.get("back").execute(message, servers);
   }
 
   console.log(args, command);

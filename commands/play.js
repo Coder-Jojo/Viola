@@ -41,6 +41,13 @@ const execute = async (msg, args, servers) => {
       if (server.queue[server.index]) {
         play(connection, message);
       } else {
+        servers[msg.guild.id] = {
+          queue: [],
+          index: 0,
+          title: [],
+          loop: false,
+          pause: false,
+        };
         connection.disconnect();
         msg.channel.send("queue finishedd byeeee!!!");
       }

@@ -3,7 +3,13 @@ const { MessageEmbed } = require("discord.js");
 const execute = (msg, servers) => {
   const server = servers[msg.guild.id];
   if (msg?.guild?.voice?.connection) {
-    server.queue = [];
+    servers[msg.guild.id] = {
+      queue: [],
+      index: 0,
+      title: [],
+      loop: false,
+      pause: false,
+    };
     if (server?.dispatcher) server.dispatcher.end();
   }
   if (msg?.guild?.connection) {

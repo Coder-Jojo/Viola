@@ -26,10 +26,18 @@ client.on("message", (message) => {
 
   const args = message.content.slice(pref.length).split(/ +/);
   const command = args.shift().toLowerCase();
-  if (command === "play") {
+  if (command === "play" || command === "p") {
     client.commands.get("play").execute(message, args, servers);
   } else if (command === "queue") {
     client.commands.get("queue").execute(message, servers);
+  } else if (command === "skip" || command === "next") {
+    client.commands.get("skip").execute(message, servers);
+  } else if (command === "stop") {
+    client.commands.get("stop").execute(message, servers);
+  } else if (command === "loop") {
+    client.commands.get("loop").execute(message, servers);
+  } else if (command === "pause") {
+    client.commands.get("pause").execute(message, servers);
   }
   console.log(args, command);
 });

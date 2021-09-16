@@ -10,7 +10,7 @@ client.on("ready", () => {
   console.log(`logged in as ${client.user.tag}`);
 });
 
-client.on("messageCreate", (msg) => {
+client.on("message", (msg) => {
   if (msg.author.bot) return;
   msg.reply(msg.content);
 });

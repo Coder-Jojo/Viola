@@ -1,7 +1,7 @@
 const execute = (msg, servers) => {
   let str = "";
   const server = servers[msg.guild.id];
-  server?.queue?.map((song) => {
+  server?.title?.map((song) => {
     str += `${song}\n`;
   });
   if (str !== "") msg.channel.send(str);

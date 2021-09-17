@@ -15,13 +15,14 @@ const execute = (msg, servers) => {
   if (msg?.guild?.connection) {
     msg.guild.voice.connection.disconnect();
   }
-  // const exampleEmbed = new MessageEmbed()
-  //   .setColor("#0099ff")
-  //   .setTitle("JojoPlaySongs")
-  //   .addField("Stop: ", "All the songs have been removed from the queue");
+  const exampleEmbed = new MessageEmbed()
+    .setColor("#0099ff")
+    .setTitle("Stop")
+    .setDescription("All the songs have been removed from the queue");
+  msg.channel.send(exampleEmbed);
+  // .addField("Stop: ", "All the songs have been removed from the queue", true);
   // console.log(exampleEmbed);
-  // msg.channel.send({ embeds: [exampleEmbed] });
-  msg.channel.send("All the songs have been removed from the queue");
+  // msg.channel.send("All the songs have been removed from the queue");
 };
 
 module.exports = { name: "stop", execute };

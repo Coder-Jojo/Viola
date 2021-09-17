@@ -1,5 +1,6 @@
 const yts = require("yt-search");
 const ytdl = require("ytdl-core");
+const { MessageEmbed } = require("discord.js");
 
 const execute = async (msg, args, servers) => {
   if (!args[0]) {
@@ -9,7 +10,10 @@ const execute = async (msg, args, servers) => {
     //   server.dispatcher.resume();
     //   console.log("msasttt");
     // } else
-    msg.channel.send("you need to provide a song!\nexample: -play arcade");
+    const embed = new MessageEmbed().setDescription(
+      "you need to provide a song!\nexample: -play arcade"
+    );
+    msg.channel.send(embed);
     return;
   }
   if (!msg.member.voice.channel) {
@@ -33,7 +37,11 @@ const execute = async (msg, args, servers) => {
     if (!server.queue[server.index]) return;
 
     server.dispatcher = connection.play(ytdl(server.queue[server.index]));
-    msg.channel.send(`Playing ${server.title[server.index]}`);
+    const embed = new MessageEmbed().addField(
+      "Playing...",
+      server.title[server.index]
+    );
+    msg.channel.send(embed);
 
     server.dispatcher.on("finish", () => {
       if (server.loop) server.index = (server.index + 1) % server.queue.length;
@@ -49,7 +57,10 @@ const execute = async (msg, args, servers) => {
           pause: false,
         };
         connection.disconnect();
-        msg.channel.send("queue finishedd byeeee!!!");
+        const embed = new MessageEmbed().setDescription(
+          "queue finishedd byeeee!!!"
+        );
+        msg.channel.send(embed);
       }
     });
 
@@ -68,7 +79,11 @@ const execute = async (msg, args, servers) => {
     // console.log(text, resp.all[0]);
     server.queue.push(resp.all[0].url);
     server.title.push(resp.all[0].title);
-    msg.channel.send(`${resp.all[0].title} added to queue`);
+    const embed = new MessageEmbed().addField(
+      "Added to queue",
+      resp.all[0].title
+    );
+    msg.channel.send(embed);
     if (!msg.guild?.voice?.connection) {
       const connection = await msg.member.voice.channel.join();
       play(connection, msg);

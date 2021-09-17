@@ -23,6 +23,19 @@ client.once("ready", () => {
 
 client.on("message", (message) => {
   if (!message.content.startsWith("-") || message.author.bot) return;
+  if (!message.member.voice.channel) {
+    message.channel.send("you must be in a voice channel!!");
+    return;
+  }
+  if (!servers[message.guild.id]) {
+    servers[message.guild.id] = {
+      queue: [],
+      index: 0,
+      title: [],
+      loop: false,
+      pause: false,
+    };
+  }
 
   const args = message.content.slice(pref.length).split(/ +/);
   const command = args.shift().toLowerCase();

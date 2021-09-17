@@ -1,10 +1,15 @@
+const { MessageEmbed } = require("discord.js");
+
 const execute = (msg, servers) => {
   const server = servers[msg.guild.id];
   //   if (server?.loop) {
   server.loop = !server.loop;
-  if (server.loop) msg.channel.send("now looping the queue");
-  else msg.channel.send("looping is stopped");
+  let info;
+  if (server.loop) info = "now looping the queue";
+  else info = "looping is stopped";
   //   }
+  const embed = new MessageEmbed().setDescription(info);
+  msg.channel.send(embed);
 };
 
 module.exports = { name: "loop", execute };

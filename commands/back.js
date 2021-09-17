@@ -1,3 +1,5 @@
+const { MessageEmbed } = require("discord.js");
+
 const execute = (msg, servers) => {
   const server = servers[msg.guild.id];
   if (server) {
@@ -5,7 +7,8 @@ const execute = (msg, servers) => {
     else server.index = -1;
     server?.dispatcher?.end();
   }
-  msg.channel.send("backed");
+  const embed = new MessageEmbed().setDescription("backed");
+  msg.channel.send(embed);
 };
 
 module.exports = { name: "back", execute };

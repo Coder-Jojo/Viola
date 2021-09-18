@@ -2,8 +2,8 @@ const Discord = require("discord.js");
 const client = new Discord.Client();
 const fs = require("fs");
 const { MessageEmbed } = require("discord.js");
-
 require("dotenv").config();
+const mongoose = require("mongoose");
 
 client.commands = new Discord.Collection();
 const commandFiles = fs
@@ -14,6 +14,24 @@ for (const file of commandFiles) {
   const command = require(`./commands/${file}`);
   client.commands.set(command.name, command);
 }
+
+const databases = new Discord.Collection();
+const databaseFiles = fs
+  .readdirSync("./database/")
+  .filter((file) => file.endsWith(".js"));
+
+for (const file of databaseFiles) {
+  const database = require(`./database/${file}`);
+  databases.set(database.name, database);
+}
+
+mongoose.connect(
+  process.env.MONGO_URI,
+  { useNewUrlParser: true, useUnifiedTopology: true },
+  () => {
+    console.log("Connected to MongoDB");
+  }
+);
 
 const pref = "-";
 const servers = [];
@@ -39,6 +57,8 @@ client.on("message", (message) => {
       loop: false,
       pause: false,
       searchResults: [],
+      dbResults: [],
+      db: {},
     };
   }
 
@@ -62,11 +82,14 @@ client.on("message", (message) => {
     client.commands.get("search").execute(message, args, servers);
   } else if (command === "add") {
     client.commands.get("play").execute(message, args, servers, true);
+  } else if (command === "db") {
+    client.commands.get("db").execute(message, args, servers, databases);
   } else {
     const embed = new MessageEmbed().setDescription(
       "Unable to recongnise the command\n\nNeed Help? Ask Jojo"
     );
     message.channel.send(embed);
+    console.log(servers[message.guild.id]);
   }
 
   // console.log(args, command);

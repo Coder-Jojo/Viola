@@ -1,6 +1,7 @@
 const yts = require("yt-search");
 const ytdl = require("ytdl-core");
 const { MessageEmbed } = require("discord.js");
+const player = require("../player");
 
 const execute = async (msg, args, servers, add) => {
   if (!args[0]) {
@@ -48,41 +49,41 @@ const execute = async (msg, args, servers, add) => {
 
   var server = servers[msg.guild.id];
 
-  const play = (connection, message) => {
-    if (!server.queue[server.index]) return;
+  // const play = (connection, message) => {
+  //   if (!server.queue[server.index]) return;
 
-    server.dispatcher = connection.play(ytdl(server.queue[server.index]));
-    const embed = new MessageEmbed().addField(
-      "Playing...",
-      server.title[server.index]
-    );
-    msg.channel.send(embed);
+  //   server.dispatcher = connection.play(ytdl(server.queue[server.index]));
+  //   const embed = new MessageEmbed().addField(
+  //     "Playing...",
+  //     server.title[server.index]
+  //   );
+  //   msg.channel.send(embed);
 
-    server.dispatcher.on("finish", () => {
-      if (server.loop) server.index = (server.index + 1) % server.queue.length;
-      else server.index++;
-      if (server.queue[server.index]) {
-        play(connection, message);
-      } else {
-        servers[msg.guild.id] = {
-          queue: [],
-          index: 0,
-          title: [],
-          loop: false,
-          pause: false,
-        };
-        connection.disconnect();
-        const embed = new MessageEmbed().setDescription(
-          "queue finishedd byeeee!!!"
-        );
-        msg.channel.send(embed);
-      }
-    });
+  //   server.dispatcher.on("finish", () => {
+  //     if (server.loop) server.index = (server.index + 1) % server.queue.length;
+  //     else server.index++;
+  //     if (server.queue[server.index]) {
+  //       play(connection, message);
+  //     } else {
+  //       servers[msg.guild.id] = {
+  //         queue: [],
+  //         index: 0,
+  //         title: [],
+  //         loop: false,
+  //         pause: false,
+  //       };
+  //       connection.disconnect();
+  //       const embed = new MessageEmbed().setDescription(
+  //         "queue finishedd byeeee!!!"
+  //       );
+  //       msg.channel.send(embed);
+  //     }
+  //   });
 
-    server.dispatcher.on("error", (e) => {
-      console.log(e);
-    });
-  };
+  //   server.dispatcher.on("error", (e) => {
+  //     console.log(e);
+  //   });
+  // };
 
   //   const text = args[0];
   let text = "";
@@ -107,7 +108,7 @@ const execute = async (msg, args, servers, add) => {
     msg.channel.send(embed);
     if (!msg.guild?.voice?.connection) {
       const connection = await msg.member.voice.channel.join();
-      play(connection, msg);
+      player(connection, msg, server);
     }
 
     // console.log(resp.all[0].url);

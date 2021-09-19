@@ -44,6 +44,7 @@ const execute = async (msg, args, servers, add) => {
       title: [],
       loop: false,
       pause: false,
+      db: {},
     };
   }
 

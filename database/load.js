@@ -1,5 +1,5 @@
 const Queue = require("../models/queue.js");
-const { titleMsg, err } = require("./msgs");
+const { titleMsg, err } = require("../msgs");
 const player = require("../player");
 
 const execute = async (msg, args, servers) => {

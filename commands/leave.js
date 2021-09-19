@@ -10,6 +10,7 @@ const execute = (msg, servers) => {
       title: [],
       loop: false,
       pause: false,
+      db: {},
     };
   }
   if (msg?.guild?.connection) {

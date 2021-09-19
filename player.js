@@ -23,6 +23,7 @@ const player = (connection, msg, server) => {
         title: [],
         loop: false,
         pause: false,
+        db: {},
       };
       connection.disconnect();
       const embed = new MessageEmbed().setDescription(

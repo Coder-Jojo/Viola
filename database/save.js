@@ -1,6 +1,6 @@
 const Queue = require("../models/queue.js");
 const { MessageEmbed } = require("discord.js");
-const { err } = require("./msgs");
+const { err } = require("../msgs");
 
 const execute = async (msg, args, servers) => {
   if (!args[0]) {

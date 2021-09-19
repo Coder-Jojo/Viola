@@ -1,4 +1,4 @@
-const { titleMsg, err } = require("./msgs");
+const { titleMsg, err } = require("../msgs");
 const Queue = require("../models/queue");
 
 const execute = async (msg, args, servers) => {

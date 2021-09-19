@@ -3,6 +3,7 @@ const { MessageEmbed } = require("discord.js");
 const execute = (msg, servers) => {
   let result = [];
   const server = servers[msg.guild.id];
+  const looping = server.loop ? "Looping..." : "Not in loop";
   if (server.index < server.queue.length) {
     result.push({
       name: `${server.index + 1}     NOW PLAYING...`,
@@ -32,7 +33,9 @@ const execute = (msg, servers) => {
     if (result.length >= 10) break;
   }
 
-  const exampleEmbed = new MessageEmbed().setColor("#0099ff").setTitle("Queue");
+  const exampleEmbed = new MessageEmbed()
+    .setColor("#0099ff")
+    .setTitle(`Queue (${looping})`);
 
   !result.length
     ? exampleEmbed.setDescription("No song in the queue")

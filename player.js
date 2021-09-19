@@ -1,7 +1,7 @@
 const ytdl = require("ytdl-core");
 const { MessageEmbed } = require("discord.js");
 
-const player = (connection, msg, server) => {
+const player = async (connection, msg, server) => {
   if (!server.queue[server.index]) return;
 
   server.dispatcher = connection.play(ytdl(server.queue[server.index]));
@@ -9,15 +9,15 @@ const player = (connection, msg, server) => {
     "Playing...",
     server.title[server.index]
   );
-  msg.channel.send(embed);
-
+  const sentMessage = await msg.channel.send(embed);
   server.dispatcher.on("finish", () => {
     if (server.loop) server.index = (server.index + 1) % server.queue.length;
     else server.index++;
+    sentMessage.delete();
     if (server.queue[server.index]) {
       player(connection, msg, server);
     } else {
-      servers[msg.guild.id] = {
+      server = {
         queue: [],
         index: 0,
         title: [],

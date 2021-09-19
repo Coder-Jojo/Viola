@@ -121,7 +121,7 @@ client.on("voiceStateUpdate", (oldState, newState) => {
         };
         oldState.channel.leave(); // leave
       }
-    }, 5000); // (5 min in ms)
+    }, 300000); // (5 min in ms)
 });
 
 client.login(process.env.TOKEN);

@@ -91,7 +91,7 @@ client.on("message", (message) => {
     client.commands.get("help").execute(message, args, servers);
   } else {
     const embed = new MessageEmbed().setDescription(
-      "Unable to recongnise the command\n\nNeed Help? Ask Jojo"
+      "Unable to recongnise the command\n\nNeed Help? use -help"
     );
     message.channel.send(embed);
     // console.log(servers[message.guild.id]);
@@ -101,27 +101,43 @@ client.on("message", (message) => {
 });
 
 client.on("voiceStateUpdate", (oldState, newState) => {
-  if (
-    oldState.channelID !== oldState.guild.me.voice.channelID ||
-    newState.channel
-  )
-    return;
-
-  if (!oldState.channel.members.size - 1)
-    setTimeout(() => {
-      if (!oldState.channel.members.size - 1) {
-        msg?.guild?.voice?.connection?.disconnect();
-        servers[msg.guild.id] = {
-          queue: [],
-          index: 0,
-          title: [],
-          loop: false,
-          pause: false,
-          db: {},
-        };
-        oldState.channel.leave(); // leave
-      }
-    }, 300000); // (5 min in ms)
+  if (oldState?.channel?.members?.size === 1) {
+    msg?.guild?.voice?.connection?.disconnect();
+    servers[msg.guild.id] = {
+      queue: [],
+      index: 0,
+      title: [],
+      loop: false,
+      pause: false,
+      db: {},
+    };
+    oldState.channel.leave(); // leave
+  }
+  // console.log(
+  //   oldState.guild.me.voice.channelID,
+  //   newState.guild.me.voice.channelID
+  // );
+  // console.log(oldState.channel.members.size, newState.channel?.members.size);
+  // if (
+  //   oldState.channelID !== oldState.guild.me.voice.channelID ||
+  //   newState.channel
+  // )
+  //   return;
+  // if (!oldState.channel.members.size - 1)
+  //   setTimeout(() => {
+  //     if (!oldState.channel.members.size - 1) {
+  //       msg?.guild?.voice?.connection?.disconnect();
+  //       servers[msg.guild.id] = {
+  //         queue: [],
+  //         index: 0,
+  //         title: [],
+  //         loop: false,
+  //         pause: false,
+  //         db: {},
+  //       };
+  //       oldState.channel.leave(); // leave
+  //     }
+  //   }, 300000); // (5 min in ms)
 });
 
 client.login(process.env.TOKEN);
